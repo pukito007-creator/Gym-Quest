@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101114">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icon-192.png"><title>GymQuest — Workout RPG</title>
+<style>
+:root{color-scheme:dark;--bg:#101114;--panel:#1b1d23;--muted:#a4a7b2;--lime:#c6ff4d;--line:#30333b;--red:#ff7777}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f6f7f9;font:16px system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:600px;margin:auto;padding:20px 16px 42px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.logo{font-weight:950;letter-spacing:.4px;font-size:21px}.logo span{color:var(--lime)}.pill{border:1px solid var(--line);padding:7px 10px;border-radius:99px;color:var(--muted);font-size:11px}
+h1{font-size:31px;line-height:1.06;margin:0 0 8px;letter-spacing:-1px}.muted{color:var(--muted)}.hero{background:linear-gradient(135deg,#242831,#17191f);border:1px solid var(--line);border-radius:23px;padding:19px;margin:18px 0}.levelrow{display:flex;align-items:center;gap:14px}.level{width:66px;height:66px;border-radius:19px;background:var(--lime);color:#111;display:grid;place-items:center;font-size:27px;font-weight:950;flex-shrink:0}.small{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}.big{font-size:20px;font-weight:850;margin-top:3px}.bar{height:10px;background:#3a3d44;border-radius:99px;overflow:hidden;margin:16px 0 8px}.fill{height:100%;width:0;background:var(--lime);border-radius:99px;transition:width .25s}.progressline{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:13px 0 22px}.stat{background:var(--panel);border:1px solid var(--line);padding:13px 10px;border-radius:16px}.num{font-size:22px;font-weight:850}.label{font-size:11px;color:var(--muted);margin-top:3px}h2{font-size:19px;margin:23px 0 11px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}.fieldrow{display:flex;gap:9px}.field{flex:1;min-width:0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.field input,.field select{width:100%;background:#111318;border:1px solid var(--line);color:white;border-radius:11px;padding:12px;font:inherit}.btn{border:0;border-radius:13px;background:var(--lime);color:#111;font-weight:850;padding:13px 15px;width:100%;font-size:15px;cursor:pointer}.btn:disabled{opacity:.35;cursor:not-allowed}.outline{background:transparent;color:#f6f7f9;border:1px solid var(--line)}.smallbtn{width:auto;padding:8px 11px;font-size:12px}.exercise{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0;background:#15171c}.exhead{display:flex;justify-content:space-between;align-items:center;gap:8px}.exname{font-weight:800}.checkline{display:flex;align-items:center;gap:8px;color:var(--lime);font-size:12px}.checkline input{accent-color:var(--lime);width:18px;height:18px}.sets{display:flex;gap:8px;margin-top:10px}.sets .field label{font-size:11px}.note{font-size:12px;color:var(--muted);line-height:1.45}.notice{border-radius:12px;background:#252b1b;color:#d9f6a0;padding:11px;font-size:13px;margin:10px 0}.danger{color:var(--red)}.log{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.log:last-child{border-bottom:0}.logtitle{font-weight:700}.logsub{font-size:11px;color:var(--muted);margin-top:3px}.logxp{color:var(--lime);font-weight:850;white-space:nowrap}.empty{padding:17px;text-align:center;color:var(--muted);background:var(--panel);border-radius:15px}.footer{font-size:11px;color:var(--muted);text-align:center;margin-top:23px}
+
+.library-tools{display:grid;grid-template-columns:1fr;gap:9px;margin-bottom:12px}
+.library-tools input,.library-tools select{width:100%;background:#111318;border:1px solid var(--line);color:white;border-radius:11px;padding:12px;font:inherit}
+.library-count{font-size:12px;color:var(--muted);margin:4px 0 10px}
+.library-list{display:grid;gap:8px;max-height:460px;overflow:auto}
+.library-item{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);background:#15171c;border-radius:13px;padding:11px}
+.library-item .details{min-width:0;flex:1}.library-item .name{font-weight:750;font-size:14px}
+.library-item .meta{font-size:11px;color:var(--muted);margin-top:3px}
+.library-item button{flex-shrink:0;border:0;background:var(--lime);color:#111;font-weight:850;border-radius:10px;padding:9px 12px;cursor:pointer}
+.quest-grid{display:grid;grid-template-columns:1fr;gap:9px}.quest,.achievement{border:1px solid var(--line);background:#15171c;border-radius:13px;padding:12px}.quest-top,.achievement{display:flex;align-items:center;justify-content:space-between;gap:10px}.quest-title,.achievement-title{font-weight:800}.quest-meta,.achievement-meta{font-size:11px;color:var(--muted);margin-top:3px}.quest-reward{color:var(--lime);font-size:12px;font-weight:850;white-space:nowrap}.badge-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}.achievement.locked{opacity:.48}.achievement-icon{font-size:22px}.achievement-copy{flex:1;min-width:0}.progress-mini{height:6px;background:#393c43;border-radius:99px;overflow:hidden;margin-top:8px}.progress-mini span{display:block;height:100%;background:var(--lime)}
+
+</style></head><body><main>
+<header class="top"><div class="logo">GYM<span>QUEST</span></div><div class="pill">WORKOUT RPG</div></header>
+<h1>Earn your next level.</h1><div class="muted">Finish your exercises, confirm your workout, and earn XP.</div>
+<section class="hero"><div class="levelrow"><div class="level" id="level">1</div><div><div class="small">Current rank</div><div class="big" id="rank">Rookie</div><div class="muted" id="totalxp">0 total XP</div></div></div><div class="bar"><div class="fill" id="fill"></div></div><div class="progressline"><span id="progress">0 / 100 XP to next level</span><span id="percent">0%</span></div></section>
+<section class="stats"><div class="stat"><div class="num" id="sessions">0</div><div class="label">Completed workouts</div></div><div class="stat"><div class="num" id="streak">0 🔥</div><div class="label">Day streak</div></div><div class="stat"><div class="num" id="weekxp">0</div><div class="label">XP this week</div></div></section>
+<h2>Your quests</h2>
+<div class="card"><p class="note" style="margin-top:0">Complete workouts to advance your character. Quest progress updates when you confirm a workout.</p><div id="quests" class="quest-grid"></div></div>
+<h2>Achievements</h2><div class="card"><div id="achievements" class="badge-list"></div></div>
+<h2>1. Build your workout</h2>
+<div class="card"><div class="fieldrow"><div class="field"><label for="plan">Workout plan</label><select id="plan" onchange="loadPlan()"><option value="full">Full body</option><option value="push">Push day</option><option value="pull">Pull day</option><option value="legs">Leg day</option><option value="cardio">Cardio day</option><option value="custom">Custom workout</option></select></div><div class="field"><label for="duration">Minutes</label><input id="duration" type="number" min="1" max="300" value="45"></div></div><div id="exercises"></div><div class="field" id="customfield" style="display:none;margin-top:12px"><label for="customname">Exercise name</label><input id="customname" maxlength="60" placeholder="e.g. Dumbbell rows"></div><button class="btn outline" style="margin-top:12px" id="addcustom" onclick="addCustom()" hidden>+ Add exercise</button><p class="note">Enter the sets and reps you completed. Check off each exercise when finished.</p></div>
+<h2>Exercise library</h2>
+<div class="card">
+<p class="note" style="margin-top:0">Browse the exercise list, search by name, or filter by muscle group. Tap Add to put an exercise into your current workout.</p>
+<div class="library-tools">
+<input id="exerciseSearch" type="search" placeholder="Search exercises (e.g. squat, chest, triceps)" oninput="renderLibrary()" aria-label="Search exercises">
+<select id="exerciseCategory" onchange="renderLibrary()" aria-label="Filter exercises by category">
+<option value="All">All muscle groups</option><option value="Chest">Chest</option><option value="Back">Back</option><option value="Shoulders">Shoulders</option><option value="Biceps">Biceps</option><option value="Triceps">Triceps</option><option value="Legs">Legs</option><option value="Glutes">Glutes</option><option value="Core">Core</option><option value="Cardio">Cardio</option><option value="Forearms">Forearms</option><option value="Traps">Traps</option><option value="Adductors">Inner thighs</option><option value="Abductors">Outer hips</option><option value="Olympic lifts">Olympic lifts</option><option value="Mobility">Mobility & warm-up</option><option value="Full body">Full body</option>
+</select></div><div id="libraryCount" class="library-count"></div><div id="libraryList" class="library-list"></div></div>
+<h2>2. Confirm and finish</h2>
+<div class="card"><div id="summary" class="note">Complete at least one exercise and check it off to finish this workout.</div><div class="notice">Reward: 50 base XP + 10 XP per completed exercise. Personal bests are tracked separately and do not award repeatable bonus XP.</div><button id="finish" class="btn" onclick="finishWorkout()" disabled>Complete workout & earn XP</button><p id="status" class="note" aria-live="polite" style="margin-bottom:0"></p></div>
+<h2>Recent completed workouts</h2><div id="logs"></div><button class="btn outline" style="margin-top:12px" onclick="resetData()">Reset all progress</button>
+<button class="btn" id="installBtn" style="display:none;margin-top:12px" onclick="installApp()">Install GymQuest</button><div class="footer">Progress is stored in this browser on this device. Exercise templates are suggestions; choose safe loads and stop if you feel pain.</div>
+</main>
+<script>
+const KEY='gymquest-v2';
+const plans={
+ full:[['Squat',3,10],['Bench press',3,8],['Lat pulldown',3,10],['Romanian deadlift',3,10],['Plank',3,30]],
+ push:[['Bench press',4,8],['Shoulder press',3,10],['Incline dumbbell press',3,10],['Lateral raise',3,12],['Triceps pushdown',3,12]],
+ pull:[['Lat pulldown',4,10],['Seated cable row',3,10],['Dumbbell row',3,10],['Face pull',3,12],['Biceps curl',3,12]],
+ legs:[['Squat or leg press',4,8],['Romanian deadlift',3,10],['Leg curl',3,12],['Leg extension',3,12],['Calf raise',3,15]],
+ cardio:[['Warm-up walk',1,5],['Main cardio session',1,25],['Cool-down',1,5]],custom:[]
+};
+let data;try{data=JSON.parse(localStorage.getItem(KEY))||{xp:0,logs:[],pbs:{}}}catch(e){data={xp:0,logs:[],pbs:{}}}
+if(!data.pbs)data.pbs={};if(!data.claims)data.claims={};let current=[];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){} renderStats();renderLogs();renderProgression()}
+function loadPlan(){let p=document.getElementById('plan').value;current=(plans[p]||[]).map((e,i)=>({id:Date.now()+i,name:e[0],sets:e[1],reps:e[2],done:false,weight:'',pb:false}));document.getElementById('customfield').style.display=p==='custom'?'block':'none';document.getElementById('addcustom').hidden=p!=='custom';renderExercises()}
+function addCustom(){let input=document.getElementById('customname'),name=input.value.trim();if(!name){input.focus();return}current.push({id:Date.now(),name,sets:3,reps:10,done:false,weight:'',pb:false});input.value='';renderExercises()}
+function renderExercises(){let box=document.getElementById('exercises');box.innerHTML=current.map((e,i)=>`<div class="exercise"><div class="exhead"><div class="exname">${esc(e.name)}</div><label class="checkline"><input type="checkbox" ${e.done?'checked':''} onchange="toggleDone(${i},this.checked)"> Done</label></div><div class="sets"><div class="field"><label>Sets</label><input aria-label="${esc(e.name)} sets" type="number" min="1" max="30" value="${e.sets}" onchange="editExercise(${i},'sets',this.value)"></div><div class="field"><label>Reps / seconds</label><input aria-label="${esc(e.name)} reps" type="number" min="1" max="1000" value="${e.reps}" onchange="editExercise(${i},'reps',this.value)"></div><div class="field"><label>Weight (lb)</label><input aria-label="${esc(e.name)} weight in pounds" type="number" min="0" max="2000" step="2.5" placeholder="—" value="${esc(String(e.weight||''))}" onchange="editExercise(${i},'weight',this.value)"></div></div><label class="checkline" style="margin-top:10px"><input type="checkbox" ${e.pb?'checked':''} onchange="togglePB(${i},this.checked)"> Personal best (record only)</label></div>`).join('')||'<div class="empty">No exercises yet. Add one above.</div>';updateSummary()}
+function editExercise(i,key,val){current[i][key]=key==='weight'?(val===''?'':Math.max(0,Number(val))):Math.max(1,Number(val)||1);updateSummary()}
+function toggleDone(i,v){current[i].done=v;updateSummary()}
+function togglePB(i,v){current[i].pb=v;updateSummary()}
+function updateSummary(){let done=current.filter(e=>e.done),xp=done.length?50+done.length*10:0;document.getElementById('summary').textContent=done.length?`${done.length} of ${current.length} exercises completed · ${document.getElementById('duration').value||0} minutes · ${xp} XP earned when confirmed.`:'Complete at least one exercise and check it off to finish this workout.';document.getElementById('finish').disabled=done.length===0}
+function awardQuests(){
+ const today=keyDate(new Date()),weekStart=new Date();weekStart.setDate(weekStart.getDate()-((weekStart.getDay()+6)%7));weekStart.setHours(0,0,0,0);
+ const todayLogs=data.logs.filter(w=>w.day===today),todayExercises=todayLogs.reduce((n,w)=>n+w.count,0),weekKey=keyDate(weekStart),weekLogs=data.logs.filter(w=>new Date(w.day+'T12:00:00')>=weekStart);
+ const ready=[['first-'+today,todayLogs.length>=1,20],['explorer-'+today,todayExercises>=5,25],['consistency-'+weekKey,weekLogs.length>=3,50]];let bonus=0;
+ for(const [id,ok,reward] of ready){if(ok&&!data.claims[id]){data.claims[id]=true;bonus+=reward}}
+ data.xp+=bonus;return bonus;
+}
+function finishWorkout(){let done=current.filter(e=>e.done);if(!done.length)return;let xp=50+done.length*10,now=new Date(),day=keyDate(now),pbNames=[];done.filter(e=>e.pb).forEach(e=>{let w=Number(e.weight)||0,old=data.pbs[e.name];if(w>0&&(!old||w>old.weight)){data.pbs[e.name]={weight:w,unit:'lb',day};pbNames.push(`${e.name}: ${w} lb`)}else if(!old)data.pbs[e.name]={weight:w,unit:'lb',day}});let workout={id:Date.now(),plan:document.getElementById('plan').selectedOptions[0].text,minutes:Math.max(1,Math.min(300,Number(document.getElementById('duration').value)||1)),count:done.length,xp,day,time:now.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}),exercises:done.map(e=>({name:e.name,sets:e.sets,reps:e.reps,weight:e.weight,pb:e.pb}))};let oldLevel=levelFor(data.xp);data.logs.unshift(workout);data.xp+=xp;const questBonus=awardQuests();save();document.getElementById('status').textContent=`Workout saved! +${xp} XP${questBonus?' + '+questBonus+' quest bonus XP':''}. ${pbNames.length?'New personal record: '+pbNames.join(', '):''}`;document.getElementById('plan').value='full';loadPlan();document.getElementById('duration').value=45;updateSummary();if(levelFor(data.xp)>oldLevel)setTimeout(()=>alert(`LEVEL UP! You reached level ${levelFor(data.xp)} 🎉`),80)}
+const exerciseCatalog = [
+["Barbell bench press","Chest",3,8],["Dumbbell bench press","Chest",3,10],["Incline barbell bench press","Chest",3,8],["Incline dumbbell press","Chest",3,10],["Decline bench press","Chest",3,10],["Dumbbell chest fly","Chest",3,12],["Cable chest fly","Chest",3,12],["Pec deck machine","Chest",3,12],["Push-up","Chest",3,12],["Chest dip","Chest",3,8],
+["Lat pulldown","Back",3,10],["Pull-up","Back",3,6],["Assisted pull-up","Back",3,8],["Barbell bent-over row","Back",3,8],["One-arm dumbbell row","Back",3,10],["Seated cable row","Back",3,10],["Chest-supported row","Back",3,10],["T-bar row","Back",3,10],["Straight-arm pulldown","Back",3,12],["Back extension","Back",3,12],["Face pull","Back",3,12],["Deadlift","Back",3,5],
+["Overhead barbell press","Shoulders",3,8],["Dumbbell shoulder press","Shoulders",3,10],["Arnold press","Shoulders",3,10],["Dumbbell lateral raise","Shoulders",3,12],["Cable lateral raise","Shoulders",3,12],["Front raise","Shoulders",3,12],["Reverse dumbbell fly","Shoulders",3,12],["Machine shoulder press","Shoulders",3,10],
+["Barbell curl","Biceps",3,10],["Dumbbell curl","Biceps",3,10],["Hammer curl","Biceps",3,10],["Preacher curl","Biceps",3,10],["Incline dumbbell curl","Biceps",3,10],["Cable curl","Biceps",3,12],["Concentration curl","Biceps",3,10],["Reverse curl","Biceps",3,12],
+["Triceps pushdown","Triceps",3,12],["Rope pushdown","Triceps",3,12],["Overhead cable triceps extension","Triceps",3,12],["Dumbbell overhead triceps extension","Triceps",3,10],["Skull crusher","Triceps",3,10],["Close-grip bench press","Triceps",3,8],["Bench dip","Triceps",3,10],
+["Barbell squat","Legs",3,8],["Goblet squat","Legs",3,10],["Leg press","Legs",3,10],["Hack squat","Legs",3,10],["Leg extension","Legs",3,12],["Lying leg curl","Legs",3,12],["Seated leg curl","Legs",3,12],["Romanian deadlift","Legs",3,10],["Stiff-leg deadlift","Legs",3,8],["Walking lunge","Legs",3,10],["Reverse lunge","Legs",3,10],["Bulgarian split squat","Legs",3,8],["Step-up","Legs",3,10],["Standing calf raise","Legs",3,15],["Seated calf raise","Legs",3,15],
+["Barbell hip thrust","Glutes",3,10],["Glute bridge","Glutes",3,12],["Cable kickback","Glutes",3,12],["Hip abduction machine","Glutes",3,15],["Kettlebell swing","Glutes",3,12],
+["Plank","Core",3,30],["Side plank","Core",3,30],["Crunch","Core",3,15],["Bicycle crunch","Core",3,20],["Hanging knee raise","Core",3,10],["Hanging leg raise","Core",3,10],["Russian twist","Core",3,20],["Ab wheel rollout","Core",3,8],["Dead bug","Core",3,10],["Mountain climber","Core",3,20],
+["Treadmill walk","Cardio",1,15],["Treadmill run","Cardio",1,20],["Stationary bike","Cardio",1,20],["Elliptical","Cardio",1,20],["Rowing machine","Cardio",1,15],["Stair climber","Cardio",1,10],["Jump rope","Cardio",1,5],["Outdoor cycling","Cardio",1,20],["Swimming","Cardio",1,20],["Brisk outdoor walk","Cardio",1,20],
+["Dynamic warm-up","Mobility",1,5],["Arm circles","Mobility",2,15],["Cat-cow stretch","Mobility",2,10],["Hip flexor stretch","Mobility",2,30],["Hamstring stretch","Mobility",2,30],["Calf stretch","Mobility",2,30],["Thoracic rotation","Mobility",2,10],["Foam rolling","Mobility",1,5],
+["Wrist curl","Forearms",3,15],["Reverse wrist curl","Forearms",3,15],["Wrist roller","Forearms",3,30],["Barbell shrug","Traps",3,12],["Dumbbell shrug","Traps",3,12],["Cable shrug","Traps",3,12],["Adductor machine","Adductors",3,12],["Copenhagen plank","Adductors",3,20],["Cable hip adduction","Adductors",3,12],["Hip abduction machine","Abductors",3,15],["Cable hip abduction","Abductors",3,12],["Clamshell","Abductors",3,15],["Power clean","Olympic lifts",3,5],["Hang clean","Olympic lifts",3,5],["Push press","Olympic lifts",3,6],["Snatch-grip high pull","Olympic lifts",3,6],["Farmer's carry","Full body",3,30],["Burpee","Full body",3,10],["Thruster","Full body",3,10],["Medicine ball slam","Full body",3,12],["Battle ropes","Full body",3,30],["Turkish get-up","Full body",3,5]
+];
+function renderLibrary(){
+ const search=(document.getElementById('exerciseSearch')?.value||'').trim().toLowerCase();
+ const category=document.getElementById('exerciseCategory')?.value||'All';
+ const filtered=exerciseCatalog.filter(e=>(category==='All'||e[1]===category)&&(!search||(e[0]+' '+e[1]).toLowerCase().includes(search)));
+ const count=document.getElementById('libraryCount'),list=document.getElementById('libraryList');if(!count||!list)return;
+ count.textContent=`${filtered.length} exercises found · ${exerciseCatalog.length} in library`;
+ list.innerHTML=filtered.map(e=>`<div class="library-item"><div class="details"><div class="name">${esc(e[0])}</div><div class="meta">${esc(e[1])} · Suggested: ${e[2]} sets × ${e[3]}${e[1]==='Mobility'?' reps / seconds':e[1]==='Cardio'?' minutes':' reps'}</div></div><button type="button" onclick="addFromLibrary(${exerciseCatalog.indexOf(e)})">+ Add</button></div>`).join('')||'<div class="empty">No exercises match. Try another search or category.</div>';
+}
+function addFromLibrary(i){const e=exerciseCatalog[i];if(!e)return;current.push({id:Date.now()+Math.random(),name:e[0],sets:e[2],reps:e[3],done:false,weight:'',pb:false});renderExercises();document.getElementById('status').textContent=`Added ${e[0]} to your workout.`;}
+
+function keyDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function levelFor(xp){return Math.floor(xp/100)+1}
+function rankFor(l){if(l>=30)return'Legend';if(l>=20)return'Elite';if(l>=12)return'Beast Mode';if(l>=7)return'Warrior';if(l>=3)return'Grinder';return'Rookie'}
+function streakCount(){let days=[...new Set(data.logs.map(x=>x.day))].sort().reverse();if(!days.length)return 0;let today=keyDate(new Date()),yesterday=keyDate(new Date(Date.now()-86400000));if(days[0]!==today&&days[0]!==yesterday)return 0;let n=0,cur=new Date(days[0]+'T12:00:00');for(let d of days){if(keyDate(cur)!==d)break;n++;cur.setDate(cur.getDate()-1)}return n}
+function renderStats(){let l=levelFor(data.xp),into=data.xp%100;document.getElementById('level').textContent=l;document.getElementById('rank').textContent=rankFor(l);document.getElementById('totalxp').textContent=data.xp+' total XP';document.getElementById('fill').style.width=into+'%';document.getElementById('progress').textContent=into+' / 100 XP to next level';document.getElementById('percent').textContent=into+'%';document.getElementById('sessions').textContent=data.logs.length;document.getElementById('streak').textContent=streakCount()+' 🔥';let n=new Date(),ws=new Date(n);ws.setDate(n.getDate()-((n.getDay()+6)%7));ws.setHours(0,0,0,0);document.getElementById('weekxp').textContent=data.logs.filter(x=>new Date(x.day+'T12:00:00')>=ws).reduce((s,x)=>s+x.xp,0)}
+function renderProgression(){
+ const today=keyDate(new Date()),todayLogs=data.logs.filter(w=>w.day===today),todayExercises=todayLogs.reduce((n,w)=>n+w.count,0);
+ const weekStart=new Date();weekStart.setDate(weekStart.getDate()-((weekStart.getDay()+6)%7));weekStart.setHours(0,0,0,0);
+ const weekLogs=data.logs.filter(w=>new Date(w.day+'T12:00:00')>=weekStart),weekCount=weekLogs.length;
+ const weekKey=keyDate(weekStart);
+ const quests=[
+  {id:'first-'+today,title:'First steps',desc:'Complete 1 workout today',progress:Math.min(todayLogs.length,1),goal:1,reward:20},
+  {id:'explorer-'+today,title:'Exercise explorer',desc:'Complete 5 exercises today',progress:Math.min(todayExercises,5),goal:5,reward:25},
+  {id:'consistency-'+weekKey,title:'Consistency quest',desc:'Complete 3 workouts this week',progress:Math.min(weekCount,3),goal:3,reward:50}
+ ];
+ document.getElementById('quests').innerHTML=quests.map(q=>{const claimed=!!data.claims[q.id];return `<div class="quest"><div class="quest-top"><div><div class="quest-title">${q.title}</div><div class="quest-meta">${q.desc}</div></div><div class="quest-reward">${claimed?'✓ Claimed':q.progress>=q.goal?'✓ Ready':'+'+q.reward+' XP'}</div></div><div class="progress-mini"><span style="width:${Math.round(q.progress/q.goal*100)}%"></span></div><div class="quest-meta">${q.progress} / ${q.goal}</div></div>`}).join('');
+ const achievements=[
+  {icon:'🏁',title:'First Workout',desc:'Complete your first workout',ok:data.logs.length>=1},
+  {icon:'⚡',title:'Level 5',desc:'Reach level 5',ok:levelFor(data.xp)>=5},
+  {icon:'💯',title:'Century Club',desc:'Earn 100 total XP',ok:data.xp>=100},
+  {icon:'🏋️',title:'Dedicated',desc:'Complete 10 workouts',ok:data.logs.length>=10},
+  {icon:'🔥',title:'On a Roll',desc:'Reach a 3-day streak',ok:streakCount()>=3},
+  {icon:'🌟',title:'Personal Best',desc:'Record a personal best',ok:Object.keys(data.pbs||{}).length>0},
+  {icon:'👑',title:'Elite',desc:'Reach level 20',ok:levelFor(data.xp)>=20},
+  {icon:'🏆',title:'Legend',desc:'Reach level 30',ok:levelFor(data.xp)>=30}
+ ];
+ document.getElementById('achievements').innerHTML=achievements.map(a=>`<div class="achievement ${a.ok?'':'locked'}"><div class="achievement-icon">${a.icon}</div><div class="achievement-copy"><div class="achievement-title">${a.title} ${a.ok?'✓':''}</div><div class="achievement-meta">${a.desc}</div></div></div>`).join('');
+}
+function renderLogs(){let box=document.getElementById('logs');box.innerHTML=data.logs.slice(0,10).map(w=>`<div class="log"><div><div class="logtitle">🏆 ${esc(w.plan)}</div><div class="logsub">${w.day} · ${w.time} · ${w.count} exercises · ${w.minutes} min</div><div class="logsub">${w.exercises.map(e=>esc(e.name)+(e.weight?' · '+esc(String(e.weight))+' lb':'')+(e.pb?' ★':'')).join(', ')}</div></div><div class="logxp">+${w.xp} XP</div></div>`).join('')||'<div class="empty">No completed workouts yet. Finish your first workout to start earning XP.</div>'}
+function resetData(){if(confirm('Delete all GymQuest workout history and XP? This cannot be undone.')){data={xp:0,logs:[],pbs:{}};save();document.getElementById('status').textContent='Progress reset.'}}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.getElementById('duration').addEventListener('input',updateSummary);loadPlan();renderStats();renderLogs();renderLibrary();renderProgression();
+
+let installPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='block'});
+async function installApp(){if(!installPrompt){alert('In Chrome, open the menu and choose Install app or Add to Home screen.');return}installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;document.getElementById('installBtn').style.display='none'}
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script></body></html>
